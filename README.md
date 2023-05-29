@@ -23,7 +23,7 @@ AccessGuard - это сервис, который обеспечивает ко�
 
 `source .venv/bin/activate` Linux
 
-`source .venv\Scripts\Activate` Windows
+`.venv\Scripts\Activate` Windows
 
 `pip install -r requirements.txt`
 
