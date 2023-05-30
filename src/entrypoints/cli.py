@@ -22,10 +22,11 @@ def main():
     if command not in COMMANDS:
         print("Command not found")
         print(f"Availble commands: {COMMANDS}")
+        return
 
-    with session_factory() as session:
-        user_gateway = UserGatewayImpl(session=session)
-        if command == "add":
+    if command == "add":
+        with session_factory() as session:
+            user_gateway = UserGatewayImpl(session=session)
             name, password, expired_date, expired_time = values
             expired_in = datetime.strptime(f"{expired_date} {expired_time}", "%d.%m.%Y %H:%M")
             CreateUser(user_gateway)(
@@ -35,13 +36,16 @@ def main():
                     expired_in=expired_in,
                 )
             )
-            expired = "expired!!!" if expired_in else "active"
+            expired = "expired!!!" if expired_in < datetime.now() else "active"
 
             print(f"user successfully added!")
-            print()
+            print(" ")
             print(f"name: {name}")
             print(f"expired in: {expired_in.strftime('%d.%m.%Y %H:%M')} ({expired})")
-        if command == "show":
+
+    if command == "show":
+        with session_factory() as session:
+            user_gateway = UserGatewayImpl(session=session)
             users = GetUsers(user_gateway)(...)
             for idx, user in enumerate(users, 1):
                 expired = "expired!!!" if user.expired else "active"
