@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from src.application.common.interfaces import Commiter
-from src.application.user.dto import UserDTO
+from src.application.user.dto import SessionDTO, UserDTO
 from src.domain.user import User, UserId
 
 
@@ -21,5 +21,12 @@ class UserGateway(Commiter, Protocol):
     def acquire_user_by_name(self, name: str) -> User:
         pass
 
-    def save_user(self, user: User, password: str | None = None) -> None:
+    def save_user(self, user: User) -> None:
+        pass
+
+
+class SessionGateway(Commiter, Protocol):
+    def get_sessions_by_user_id(
+        self, user_id: UserId, offset: int | None = None, limit: int | None = None
+    ) -> list[SessionDTO]:
         pass

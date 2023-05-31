@@ -7,11 +7,13 @@ from starlette import status
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+from telebot import TeleBot
 
 from src.application.ioc import InteractorFactory
 from src.domain.exceptions import AuthenticationError
 from src.presentation.formatter import datetime_format
 from src.presentation.web_api.auth import HttpAuthenticator
+from src.presentation.web_api.providers import bot_provider
 
 user_profile_router = APIRouter()
 
@@ -25,6 +27,7 @@ def profile(
     request: Request,
     authenticator: Annotated[HttpAuthenticator, Depends()],
     ioc: Annotated[InteractorFactory, Depends()],
+    bot: TeleBot = Depends(bot_provider),
     session_id: str = Cookie(...),
 ):
     try:
@@ -40,5 +43,5 @@ def profile(
 
     return templates.TemplateResponse(
         "profile.html",
-        {"request": request, "user": user},
+        {"request": request, "user": user, "bot_deeplink": f"https://t.me/{bot.user.username}?start={user_id}"},
     )

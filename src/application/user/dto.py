@@ -6,7 +6,9 @@ from src.domain.user import UserId
 
 @dataclass(frozen=True)
 class UserDTO:
+    user_id: UserId
     name: str
+    telegram_id: int
     expired_in: datetime
 
     @property
@@ -26,3 +28,10 @@ class UpdateUserDTO:
     user_id: UserId
     name: str | None
     expired_in: datetime | None
+
+
+@dataclass(frozen=True)
+class SessionDTO:
+    created_at: datetime
+    session_id: str
+    user_id: str

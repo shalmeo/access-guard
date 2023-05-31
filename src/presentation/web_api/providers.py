@@ -3,6 +3,7 @@ from typing import Callable
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
+from telebot import TeleBot
 
 from src.application.ioc import IoC
 from src.infrastructure.auth.http import HttpAuthenticatorImpl
@@ -11,13 +12,10 @@ from src.infrastructure.database.gateways.user import UserGatewayImpl
 
 
 def session_provider() -> Session:
-    ...
+    pass
 
 
-def session(uri: str) -> Callable[[str], Session]:
-    engine = create_engine(url=uri)
-    session_factory = sessionmaker(engine, expire_on_commit=False)
-
+def session(session_factory: sessionmaker) -> Callable[[str], Session]:
     def session_wrapper() -> Session:
         session_: Session = session_factory()
         try:
@@ -26,6 +24,10 @@ def session(uri: str) -> Callable[[str], Session]:
             session_.close()
 
     return session_wrapper
+
+
+def bot_provider() -> TeleBot:
+    pass
 
 
 def ioc(session_: Session = Depends(session_provider)):

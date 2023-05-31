@@ -8,3 +8,14 @@ class DatabaseConfig:
     @property
     def uri(self) -> str:
         return f"sqlite:///{self.filename}"
+
+
+@dataclass(frozen=True)
+class NotificationSenderConfig:
+    check_interval: int = 30
+
+
+@dataclass(frozen=True)
+class BotConfig:
+    # TODO: rewrite to ENV
+    token: str = ""

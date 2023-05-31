@@ -12,6 +12,12 @@ class LoginResultDTO:
 
 
 @dataclass(frozen=True)
+class TelegramLoginResultDTO:
+    telegram_id: int
+    user_id: UserId
+
+
+@dataclass(frozen=True)
 class SessionDTO:
     session_id: UUID
     user_id: UserId
